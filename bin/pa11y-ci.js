@@ -52,6 +52,11 @@ program
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
 		'0'
 	)
+	//Added option for localStorage token
+	.option(
+		'-l, --localStorage <string>',
+		'a token to be set in localstorage'
+	)
 	.parse(process.argv);
 
 // Parse the args into valid paths using glob and protocolify
@@ -74,8 +79,8 @@ Promise.resolve()
 		return config;
 	})
 	.then(config => {
-		// Actually run Pa11y CI
-		return pa11yCi(urls.concat(config.urls || []), config.defaults);
+		// Actually run Pa11y CI. Added localStorage option to pass argument
+		return pa11yCi(urls.concat(config.urls || []), config.defaults, program.localStorage);
 	})
 	.then(report => {
 		// Output JSON if asked for it
